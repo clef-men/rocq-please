@@ -1,0 +1,25 @@
+(include_subdirs qualified)
+
+(rocq.theory
+ (name please)
+ (package rocq-please)
+ (generate_project_file)
+ (plugins
+  rocq-please.plugin
+ )
+ (theories
+  Stdlib
+  Ltac2
+  stdpp
+ )
+ (flags
+  :standard
+  -w +default
+ )
+ (rocqdoc_flags
+  :standard
+  --gallina
+  --no-lib-name
+  --external https://plv.mpi-sws.org/rocqdoc/stdpp/ stdpp
+ )
+)
