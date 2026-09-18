@@ -21,13 +21,7 @@ module Make (Spec : SPEC) = struct
   let solve () =
     Spec.tactic
     |> Libnames.qualid_of_string
-    |> (fun id ->
-      try
-        Tacenv.locate_tactic id
-      with Not_found ->
-        CErrors.user_err
-          Pp.(fmt "Tactic %s was not found." Spec.tactic)
-    )
+    |> Tacenv.locate_tactic
     |> Loc.tag
     |> Tacexpr.(fun id -> TacArg (Reference (Locus.ArgArg id)))
     |> CAst.make
