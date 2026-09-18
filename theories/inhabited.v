@@ -2,8 +2,9 @@ Require Import please.prelude.
 Require Import please.options.
 
 Ltac solve_inhabited :=
-  solve [
-    refine (populate _);
+  first
+  [ apply _
+  | refine (populate _);
     constructor; apply inhabitant
   ].
 

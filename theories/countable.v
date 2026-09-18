@@ -265,7 +265,10 @@ Module solve_countable.
 End solve_countable.
 
 Ltac solve_countable :=
-  ltac2:(solve_countable.main ()).
+  first
+  [ apply _
+  | ltac2:(solve_countable.main ())
+  ].
 
 Module tests.
   Record test₁ :=
