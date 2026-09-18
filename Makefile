@@ -12,7 +12,7 @@ install :
 
 .PHONY : doc
 doc :
-	@ dune build theories/please.html --display=short
+	@ dune build @theories/doc
 
 .PHONY : clean
 clean :
