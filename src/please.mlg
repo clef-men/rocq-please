@@ -16,10 +16,7 @@ VERNAC ARGUMENT EXTEND derive_kind
 END
 
 VERNAC COMMAND EXTEND Please
-  CLASSIFIED BY {
-    fun _ ->
-      Vernacextend.VtSideff ([], Vernacextend.VtNow)
-  }
+  CLASSIFIED AS SIDEFF
 | #[ locality = Attributes.hint_locality_default_superglobal ]
   [ "Please" "derive" derive_kind(kind) "for" reference(ty) ] ->
     { Derive.derive ~locality ~kind ~ty }
