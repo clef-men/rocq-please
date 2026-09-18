@@ -10,3 +10,9 @@ _build/
 
 # Visual Studio Code
 .vscode/
+
+# Rocq
+.lia.cache
+.nia.cache
+.nlia.cache
+.nra.cache
