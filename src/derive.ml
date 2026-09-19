@@ -43,6 +43,11 @@ module Make (Spec : SPEC) = struct
         Hints.empty_hint_info
         None
     in
+    let _ctx, proof =
+      Declare.Proof.set_proof_using
+        proof
+        (Proof_using.using_from_string "Type*")
+    in
     let proof, _safe =
       Declare.Proof.by
         (Global.env ())
