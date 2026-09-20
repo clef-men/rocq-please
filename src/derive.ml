@@ -29,7 +29,7 @@ module Make (Spec : SPEC) = struct
 
   let derive ~locality ~ty =
     let ty_name = ty |> Libnames.qualid_basename |> Names.Id.to_string in
-    let name = Printf.sprintf "%sｰ%s" ty_name Spec.name in
+    let name = Printf.sprintf "%s%s%s" ty_name Separator.hyphen Spec.name in
     let name = Names.(Name.Name (Id.of_string name)) |> CAst.make in
     let ty = Constrexpr.CRef (ty, None) |> CAst.make in
     let class_ = Constrexpr.CApp (class_, [ty, None]) |> CAst.make in
