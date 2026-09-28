@@ -5,6 +5,8 @@ end
 val lident_of_string :
   string -> lident
 
+val lname_of_lident :
+  lident -> lname
 val lname_of_ident :
   Id.t -> lname
 val lname_of_string :

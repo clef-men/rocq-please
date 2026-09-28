@@ -28,7 +28,7 @@ VERNAC COMMAND EXTEND derive
 END
 
 VERNAC ARGUMENT EXTEND definition
-| [ "Definition" ident(id) def_body(def) ] ->
+| [ "Definition" identref(id) def_body(def) ] ->
     { id, def }
 END
 

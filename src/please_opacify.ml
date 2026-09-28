@@ -40,14 +40,14 @@ let register ~state ~reg ~locality id def =
       [ ( locality
         , VernacDefinition
           ( (NoDischarge, Definition)
-          , (id |> Names_.lname_of_ident, None)
+          , (id |> Names_.lname_of_lident, None)
           , def
           )
         )
       ] ;
   in
   Vernacstate_.unfreeze_full_state state ;
-  Register.add id reg
+  Register.add id.v reg
 let register ~locality id def =
   Vernacstate_.freeze_full_state_and_try @@ fun state ->
     Register.update @@ fun reg ->

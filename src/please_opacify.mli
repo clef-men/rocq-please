@@ -1,6 +1,6 @@
 val register :
   locality:Hints.hint_locality option ->
-  Names.Id.t ->
+  Names.lident ->
   Vernacexpr.definition_expr ->
   unit
 
