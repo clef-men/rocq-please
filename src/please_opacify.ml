@@ -34,10 +34,10 @@ end = struct
       raise exn
 end
 
-let register ~state ~reg id def =
+let register ~state ~reg ~locality id def =
   let state =
     Vernacinterp_.interp ~state
-      [ ( None
+      [ ( locality
         , VernacDefinition
           ( (NoDischarge, Definition)
           , (id |> Names_.lname_of_ident, None)
@@ -48,10 +48,10 @@ let register ~state ~reg id def =
   in
   Vernacstate_.unfreeze_full_state state ;
   Register.add id reg
-let register id def =
+let register ~locality id def =
   Vernacstate_.freeze_full_state_and_try @@ fun state ->
     Register.update @@ fun reg ->
-      register ~state ~reg id def
+      register ~state ~reg ~locality id def
 
 let opacify ~state ~reg =
   reg |> Register.iter (fun id ->

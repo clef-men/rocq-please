@@ -1,5 +1,8 @@
 val register :
-  Names.Id.t -> Vernacexpr.definition_expr -> unit
+  locality:Hints.hint_locality option ->
+  Names.Id.t ->
+  Vernacexpr.definition_expr ->
+  unit
 
 val opacify :
   unit -> unit

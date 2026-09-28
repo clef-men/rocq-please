@@ -36,7 +36,12 @@ VERNAC COMMAND EXTEND definition
   CLASSIFIED AS SIDEFF
 | [ "Please" definition(def) ] ->
     { let id, def = def in
-      Please_opacify.register id def
+      Please_opacify.register ~locality:None id def
+    }
+| #[ locality = Attributes.explicit_hint_locality ]
+  [ "Please" definition(def) ] ->
+    { let id, def = def in
+      Please_opacify.register ~locality id def
     }
 END
 
