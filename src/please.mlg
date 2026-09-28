@@ -2,7 +2,12 @@ DECLARE PLUGIN "rocq-please.plugin"
 
 {
 
+open Procq.Constr
+open Procq.Prim
 open Stdarg
+
+let def_body =
+  G_vernac.def_body
 
 }
 
@@ -15,9 +20,28 @@ VERNAC ARGUMENT EXTEND derive_kind
     { Derive.Countable }
 END
 
-VERNAC COMMAND EXTEND Please
+VERNAC COMMAND EXTEND derive
   CLASSIFIED AS SIDEFF
 | #[ locality = Attributes.hint_locality_default_superglobal ]
   [ "Please" "derive" derive_kind(kind) "for" reference(ty) ] ->
     { Derive.derive ~locality ~kind ~ty }
+END
+
+VERNAC ARGUMENT EXTEND definition
+| [ "Definition" ident(id) def_body(def) ] ->
+    { id, def }
+END
+
+VERNAC COMMAND EXTEND definition
+  CLASSIFIED AS SIDEFF
+| [ "Please" definition(def) ] ->
+    { let id, def = def in
+      Opacify.register id def
+    }
+END
+
+VERNAC COMMAND EXTEND opacify
+  CLASSIFIED AS SIDEFF
+| [ "Please" "opacify" ] ->
+    { Opacify.opacify () }
 END
