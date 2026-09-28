@@ -13,18 +13,18 @@ let def_body =
 
 VERNAC ARGUMENT EXTEND derive_kind
 | [ "Inhabited" ] ->
-    { Derive.Inhabited }
+    { Please_derive.Inhabited }
 | [ "EqDecision" ] ->
-    { Derive.Eq_decision }
+    { Please_derive.Eq_decision }
 | [ "Countable" ] ->
-    { Derive.Countable }
+    { Please_derive.Countable }
 END
 
 VERNAC COMMAND EXTEND derive
   CLASSIFIED AS SIDEFF
 | #[ locality = Attributes.hint_locality_default_superglobal ]
   [ "Please" "derive" derive_kind(kind) "for" reference(ty) ] ->
-    { Derive.derive ~locality ~kind ~ty }
+    { Please_derive.derive ~locality ~kind ~ty }
 END
 
 VERNAC ARGUMENT EXTEND definition
@@ -36,12 +36,12 @@ VERNAC COMMAND EXTEND definition
   CLASSIFIED AS SIDEFF
 | [ "Please" definition(def) ] ->
     { let id, def = def in
-      Opacify.register id def
+      Please_opacify.register id def
     }
 END
 
 VERNAC COMMAND EXTEND opacify
   CLASSIFIED AS SIDEFF
 | [ "Please" "opacify" ] ->
-    { Opacify.opacify () }
+    { Please_opacify.opacify () }
 END
