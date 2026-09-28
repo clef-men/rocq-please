@@ -1,31 +1,17 @@
 module Register : sig
-  type t
+  type t =
+    Names.Id.t list
 
-  val empty :
-    t
-  val add :
-    Names.Id.t -> t -> t
-  val iter :
-    (Names.Id.t -> unit) -> t -> unit
-
-  val update :
+  val modify :
     (t -> t) -> unit
 end = struct
   type t =
     Names.Id.t list
 
-  let empty =
-    []
-
-  let add id t =
-    id :: t
-
-  let iter fn t =
-    List.iter fn t
-
   let registered =
-    ref empty
-  let update fn =
+    ref []
+
+  let modify fn =
     let t = !registered in
     try
       registered := fn t
@@ -47,30 +33,30 @@ let register ~state ~reg ~locality id def =
       ] ;
   in
   Vernacstate_.unfreeze_full_state state ;
-  Register.add id.v reg
+  id.v :: reg
 let register ~locality id def =
   Vernacstate_.freeze_full_state_and_try @@ fun state ->
-    Register.update @@ fun reg ->
+    Register.modify @@ fun reg ->
       register ~state ~reg ~locality id def
 
 let opacify ~state ~reg =
-  reg |> Register.iter (fun id ->
-    let state =
-      Vernacinterp_.interp ~state
-        [ ( Some SuperGlobal
-          , VernacSetOpacity
-            ( ( Opaque
-              , [Constrexpr.AN (id |> Libnames.qualid_of_ident) |> CAst.make]
-              )
-            , false
-            )
+  let vernacs =
+    reg |> List.map @@ fun id ->
+      let open Vernacexpr in
+      let open Constrexpr in
+      ( Some Libobject.SuperGlobal
+      , VernacSetOpacity
+        ( ( Opaque
+          , [AN (id |> Libnames.qualid_of_ident) |> CAst.make]
           )
-        ] ;
-    in
-    Vernacstate_.unfreeze_full_state state ;
-  ) ;
-  Register.empty
+        , false
+        )
+      )
+  in
+  let state = Vernacinterp_.interp ~state vernacs in
+  Vernacstate_.unfreeze_full_state state ;
+  []
 let opacify () =
   Vernacstate_.freeze_full_state_and_try @@ fun state ->
-    Register.update @@ fun reg ->
+    Register.modify @@ fun reg ->
       opacify ~state ~reg
