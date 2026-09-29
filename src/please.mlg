@@ -50,3 +50,15 @@ VERNAC COMMAND EXTEND opacify
 | [ "Please" "opacify" ] ->
     { Please_opacify.opacify () }
 END
+
+VERNAC COMMAND EXTEND begin
+  CLASSIFIED AS SIDEFF
+| [ "Please" "begin" ] ->
+    { Please_opacify.begin_ () }
+END
+
+VERNAC COMMAND EXTEND end
+  CLASSIFIED AS SIDEFF
+| [ "Please" "end" ] ->
+    { Please_opacify.end_ () }
+END

@@ -2,6 +2,11 @@ module Register : sig
   type t =
     Names.Id.t list
 
+  val begin_ :
+    unit -> unit
+  val end_ :
+    unit -> unit
+
   val modify :
     (t -> t) -> unit
 end = struct
@@ -9,9 +14,20 @@ end = struct
     Names.Id.t list
 
   let registered =
-    ref []
+    Stack.create ()
+
+  let begin_ () =
+    Stack.push (ref []) registered
+
+  let () =
+    begin_ ()
+
+  let end_ () =
+    if 1 < Stack.length registered then
+      Stack.drop registered
 
   let modify fn =
+    let registered = Stack.top registered in
     let t = !registered in
     try
       registered := fn t
@@ -60,3 +76,9 @@ let opacify () =
   Vernacstate_.freeze_full_state_and_try @@ fun state ->
     Register.modify @@ fun reg ->
       opacify ~state ~reg
+
+let begin_ =
+  Register.begin_
+
+let end_ =
+  Register.end_

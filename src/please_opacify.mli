@@ -6,3 +6,8 @@ val register :
 
 val opacify :
   unit -> unit
+
+val begin_ :
+  unit -> unit
+val end_ :
+  unit -> unit
