@@ -46,3 +46,33 @@ Tactic Notation "case_decide" "as" "[" simple_intropattern(pat1) "|" simple_intr
   [ intros pat1
   | intros pat2
   ].
+
+#[local] Ltac refine_simpl constr :=
+  let constr := eval simpl in constr in
+  refine constr.
+Notation "'ltac۰simpl:' x" := (
+  ltac:(refine_simpl x)
+)(at level 2,
+  x at level 1,
+  only parsing
+).
+
+#[local] Ltac refine_cbn constr :=
+  let constr := eval cbn in constr in
+  refine constr.
+Notation "'ltac۰cbn:' x" := (
+  ltac:(refine_cbn x)
+)(at level 2,
+  x at level 1,
+  only parsing
+).
+
+#[local] Ltac refine_compute constr :=
+  let constr := eval vm_compute in constr in
+  refine constr.
+Notation "'ltac۰compute:' x" := (
+  ltac:(refine_compute x)
+)(at level 2,
+  x at level 1,
+  only parsing
+).
