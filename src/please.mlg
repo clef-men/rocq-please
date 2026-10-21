@@ -24,7 +24,7 @@ VERNAC COMMAND EXTEND please_derive
   CLASSIFIED AS SIDEFF
 | #[ locality = Attributes.hint_locality_default_superglobal ]
   [ "Please" "derive" please_derive_kind(kind) "for" reference(ty) ] ->
-    { Please_derive.derive ~locality ~kind ~ty }
+    { Please_derive.interp ~locality ~kind ~ty }
 END
 
 VERNAC ARGUMENT EXTEND please_definition
@@ -36,29 +36,29 @@ VERNAC COMMAND EXTEND please_definition
   CLASSIFIED AS SIDEFF
 | [ "Please" please_definition(def) ] ->
     { let id, def = def in
-      Please_opacify.register ~locality:None id def
+      Please_opacify.interp_register ~locality:None id def
     }
 | #[ locality = Attributes.explicit_hint_locality ]
   [ "Please" please_definition(def) ] ->
     { let id, def = def in
-      Please_opacify.register ~locality id def
+      Please_opacify.interp_register ~locality id def
     }
 END
 
 VERNAC COMMAND EXTEND please_opacify
   CLASSIFIED AS SIDEFF
 | [ "Please" "opacify" ] ->
-    { Please_opacify.opacify () }
+    { Please_opacify.interp_opacify () }
 END
 
 VERNAC COMMAND EXTEND please_begin
   CLASSIFIED AS SIDEFF
 | [ "Please" "begin" ] ->
-    { Please_opacify.begin_ () }
+    { Please_opacify.interp_begin () }
 END
 
 VERNAC COMMAND EXTEND please_end
   CLASSIFIED AS SIDEFF
 | [ "Please" "end" ] ->
-    { Please_opacify.end_ () }
+    { Please_opacify.interp_end () }
 END

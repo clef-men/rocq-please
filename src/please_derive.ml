@@ -27,7 +27,7 @@ module Make (Spec : SPEC) = struct
     |> CAst.make
     |> Tacinterp.eval_tactic
 
-  let derive ~locality ~ty =
+  let interp ~locality ~ty =
     let ty_name = ty |> Libnames.qualid_basename |> Names.Id.to_string in
     let name = Printf.sprintf "%s%s%s" ty_name Separator.hyphen Spec.name in
     let name = Names.(Name.Name (Id.of_string name)) |> CAst.make in
@@ -110,11 +110,11 @@ type kind =
   | Eq_decision
   | Countable
 
-let derive ~locality ~kind ~ty =
+let interp ~locality ~kind ~ty =
   match kind with
   | Inhabited ->
-      Inhabited.derive ~locality ~ty
+      Inhabited.interp ~locality ~ty
   | Eq_decision ->
-      Eq_decision.derive ~locality ~ty
+      Eq_decision.interp ~locality ~ty
   | Countable ->
-      Countable.derive ~locality ~ty
+      Countable.interp ~locality ~ty

@@ -5,7 +5,7 @@ type kind =
   | Eq_decision
   | Countable
 
-val derive :
+val interp :
   locality:Hints.hint_locality ->
   kind:kind ->
   ty:Libnames.qualid ->

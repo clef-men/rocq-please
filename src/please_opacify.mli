@@ -1,13 +1,13 @@
-val register :
+val interp_register :
   locality:Hints.hint_locality option ->
   Names.lident ->
   Vernacexpr.definition_expr ->
   unit
 
-val opacify :
+val interp_opacify :
   unit -> unit
 
-val begin_ :
+val interp_begin :
   unit -> unit
-val end_ :
+val interp_end :
   unit -> unit
