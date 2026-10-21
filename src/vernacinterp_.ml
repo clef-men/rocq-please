@@ -9,7 +9,6 @@ let interp ~state vernac =
 
 let interp ~state vernacs =
   List.fold_left (fun state (locality, vernac) ->
-    let vernac = Vernacexpr.VernacSynPure vernac in
     let vernac =
       let locality =
         locality |> Option.map @@ fun locality ->
@@ -23,3 +22,9 @@ let interp ~state vernacs =
     let vernac = vernac |> CAst.make in
     interp ~state vernac
   ) state vernacs
+let interp_synpure ~state vernacs =
+  let vernacs =
+    vernacs |> List.map @@ fun (locality, vernac) ->
+      locality, Vernacexpr.VernacSynPure vernac
+  in
+  interp ~state vernacs

@@ -38,7 +38,7 @@ end
 
 let register ~state ~reg ~locality id def =
   let state =
-    Vernacinterp_.interp ~state
+    Vernacinterp_.interp_synpure ~state
       [ ( locality
         , VernacDefinition
           ( (NoDischarge, Definition)
@@ -69,7 +69,7 @@ let opacify ~state ~reg =
         )
       )
   in
-  let state = Vernacinterp_.interp ~state vernacs in
+  let state = Vernacinterp_.interp_synpure ~state vernacs in
   Vernacstate_.unfreeze_full_state state ;
   []
 let opacify () =

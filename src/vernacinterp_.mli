@@ -4,5 +4,9 @@ end
 
 val interp :
   state:Vernacstate.t ->
+  (Libobject.locality option * Vernacexpr.vernac_expr) list ->
+  Vernacstate.t
+val interp_synpure :
+  state:Vernacstate.t ->
   (Libobject.locality option * Vernacexpr.synpure_vernac_expr) list ->
   Vernacstate.t
