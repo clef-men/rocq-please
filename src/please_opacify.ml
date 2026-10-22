@@ -1,42 +1,45 @@
 module Register : sig
-  type t =
-    Names.Id.t list
-
   val begin_ :
     unit -> unit
   val end_ :
     unit -> unit
 
-  val modify :
-    (t -> t) -> unit
-end = struct
-  type t =
-    Names.Id.t list
+  val get :
+    unit -> Names.Id.t list
 
-  let registered =
+  val add :
+    Names.Id.t -> unit
+
+  val clear :
+    unit -> unit
+end = struct
+  let scopes =
     Stack.create ()
 
   let begin_ () =
-    Stack.push (ref []) registered
+    Stack.push Names.Id.Set.empty scopes
 
   let () =
     begin_ ()
 
   let end_ () =
-    if 1 < Stack.length registered then
-      Stack.drop registered
+    if 1 < Stack.length scopes then
+      Stack.drop scopes
 
-  let modify fn =
-    let registered = Stack.top registered in
-    let t = !registered in
-    try
-      registered := fn t
-    with exn ->
-      registered := t ;
-      raise exn
+  let get () =
+    Stack.top scopes |> Names.Id.Set.elements
+
+  let add id =
+    let scope = Stack.pop scopes in
+    let scope = Names.Id.Set.add id scope in
+    Stack.push scope scopes
+
+  let clear () =
+    Stack.drop scopes ;
+    Stack.push Names.Id.Set.empty scopes
 end
 
-let interp_register ~state ~reg ~locality id def =
+let interp_register ~state ~locality id def =
   let state =
     Vernacinterp_.interp_synpure ~state
       [ ( locality
@@ -46,18 +49,17 @@ let interp_register ~state ~reg ~locality id def =
           , def
           )
         )
-      ] ;
+      ]
   in
   Vernacstate_.unfreeze_full_state state ;
-  id.v :: reg
+  Register.add id.v
 let interp_register ~locality id def =
   Vernacstate_.freeze_full_state_and_try @@ fun state ->
-    Register.modify @@ fun reg ->
-      interp_register ~state ~reg ~locality id def
+    interp_register ~state ~locality id def
 
-let interp_opacify ~state ~reg =
+let interp_opacify ~state =
   let vernacs =
-    reg |> List.map @@ fun id ->
+    Register.get () |> List.map @@ fun id ->
       let open Vernacexpr in
       let open Constrexpr in
       ( Some Libobject.SuperGlobal
@@ -71,11 +73,10 @@ let interp_opacify ~state ~reg =
   in
   let state = Vernacinterp_.interp_synpure ~state vernacs in
   Vernacstate_.unfreeze_full_state state ;
-  []
+  Register.clear ()
 let interp_opacify () =
   Vernacstate_.freeze_full_state_and_try @@ fun state ->
-    Register.modify @@ fun reg ->
-      interp_opacify ~state ~reg
+    interp_opacify ~state
 
 let interp_begin =
   Register.begin_
