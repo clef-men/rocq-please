@@ -10,6 +10,17 @@ module Id = struct
     |> Names.Id.of_string
 end
 
+module DirPath = struct
+  include DirPath
+
+  let case ~empty ~snoc t =
+    match repr t with
+    | [] ->
+        empty
+    | id :: ids ->
+        snoc id (make ids)
+end
+
 let lident_of_string str =
   str
   |> Names.Id.of_string

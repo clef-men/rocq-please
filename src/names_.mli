@@ -11,6 +11,15 @@ module Id : sig
     (string -> string) -> t -> t
 end
 
+module DirPath : sig
+  include module type of struct
+    include DirPath
+  end
+
+  val case :
+    empty:'a -> snoc:(Names.Id.t -> t -> 'a) -> t -> 'a
+end
+
 val lident_of_string :
   string -> lident
 
