@@ -3,6 +3,12 @@ open Constrexpr
 val hole :
   constr_expr
 
+val mk_int :
+  int -> constr_expr
+
+val mk_string :
+  string -> constr_expr
+
 val mk_ref :
   Libnames.qualid -> constr_expr
 val mk_ref_string :

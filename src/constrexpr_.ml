@@ -3,6 +3,16 @@ open Constrexpr
 let hole =
   CHole None |> CAst.make
 
+let mk_int n =
+  n
+  |> string_of_int
+  |> NumTok.Signed.of_int_string
+  |> (fun n -> CPrim (Number n))
+  |> CAst.make
+
+let mk_string str =
+  CPrim (String str) |> CAst.make
+
 let mk_ref id =
   CRef (id, None) |> CAst.make
 let mk_ref_string str =
