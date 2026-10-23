@@ -1,3 +1,10 @@
+let current_directory () =
+  Lib.library_dp ()
+  |> Names.DirPath.repr
+  |> List.tl
+  |> List.hd
+  |> Names.Id.to_string
+
 let current_unit () =
   Lib.library_dp ()
   |> Names.DirPath.repr

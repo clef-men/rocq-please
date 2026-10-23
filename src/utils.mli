@@ -1,3 +1,5 @@
+val current_directory :
+  unit -> string
 val current_unit :
   unit -> string
 
