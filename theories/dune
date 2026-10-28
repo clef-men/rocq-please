@@ -19,6 +19,6 @@
  (rocqdoc_flags
   :standard
   --no-lib-name
-  --external https://plv.mpi-sws.org/rocqdoc/stdpp/ stdpp
+  --external https://plv.mpi-sws.org/rocqdoc/stdpp stdpp
  )
 )
