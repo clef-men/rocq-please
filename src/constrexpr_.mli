@@ -21,3 +21,6 @@ val mk_app :
 
 val mk_arrow :
   constr_expr -> constr_expr -> constr_expr
+
+val mk_list :
+  constr_expr list -> constr_expr

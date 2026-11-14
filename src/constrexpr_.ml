@@ -39,3 +39,8 @@ let mk_arrow expr1 expr2 =
     ]
   , expr2
   ) |> CAst.make
+
+let mk_list constrs =
+  List.fold_right (fun constr acc ->
+    mk_app Std.cons_constr [constr; acc]
+  ) constrs Std.nil_constr
